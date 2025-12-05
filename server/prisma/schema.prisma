@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password_hash String
+  inventory     InventoryItem[]
+  expenses      Expense[]
+}
+
+model InventoryItem {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  name         String
+  status       Status
+  cogs         Float
+  sale_price   Float
+  net_profit   Float
+  r2_image_url String?
+  user         User     @relation(fields: [user_id], references: [id])
+}
+
+enum Status {
+  Sourced
+  InProcessing
+  Drafting
+  Active
+  Sold
+}
+
+model Expense {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  type         ExpenseType
+  amount       Float
+  date         DateTime
+  is_deductible Boolean
+  user         User     @relation(fields: [user_id], references: [id])
+}
+
+enum ExpenseType {
+  COGS
+  Mileage
+  Supplies
+  Fee
+}

@@ -1,0 +1,12 @@
+name = "resell-compass-server"
+main = "src/index.js"
+compatibility_date = "2025-12-05"
+
+[env]
+DATABASE_URL = "<your-cloud-database-url>"
+R2_BINDING = "<your-r2-binding-name>"
+
+[[r2_buckets]]
+binding = "R2_BINDING"
+bucket_name = "resell-compass-bucket"
+preview_bucket_name = "resell-compass-bucket-preview"
